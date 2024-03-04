@@ -6,7 +6,7 @@ class Board:
     """
     Handle logical of the board
     """
-    size: Vector2  # x: width and y: height
+    size: Vector2 # x: width and y: height
     balls: list[Ball]
     friction_coeff: float
 
