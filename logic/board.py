@@ -1,13 +1,12 @@
 from pygame.math import Vector2
 from ball import Ball
-from logic.player import Player
 
 
 class Board:
     """
     Handle logical of the board
     """
-    size: Vector2 # x: width and y: height
+    size: Vector2  # x: width and y: height
     balls: list[Ball]
     friction_coeff: float
 
@@ -21,7 +20,7 @@ class Board:
 
         self.size = Vector2(width, height)
         self.friction_coeff = friction
-        self.balls = [Ball()]
+        self.balls = []
 
     def is_collide(self, ball: Ball):
         """
@@ -30,13 +29,13 @@ class Board:
         :return: Bool
         """
 
-        if ball.radius > ball.pos.x or ball.pos.x > self.size.x+ball.radius:
+        if ball.radius >= ball.pos.x or ball.pos.x >= self.size.x + ball.radius:
             return True
-        if ball.radius > ball.pos.y or ball.pos.y > self.size.y + ball.radius:
+        if ball.radius >= ball.pos.y or ball.pos.y >= self.size.y + ball.radius:
             return True
         for ball2 in self.balls:
             if ball2 == ball:
                 continue
-            if ball.dist(ball2) <= 2*ball.radius:
+            if ball.dist(ball2) <= 2 * ball.radius:
                 return True
         return False
