@@ -27,6 +27,7 @@ class Ball:
         self.color = color
         self.radius = radius
 
+
     def dist(self, other: Ball):
         """
         Calculate the distance between a ball and another ball
