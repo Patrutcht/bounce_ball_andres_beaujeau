@@ -8,7 +8,7 @@ class Board:
     """
     Handle logical of the board
     """
-    size: Vector2 # x: width and y: height
+    size: Vector2  # x: width and y: height
     balls: list[Ball]
     friction_coeff: float
 
@@ -53,10 +53,9 @@ class Board:
 
         ball = Ball(randrange(radius, self.size.x - radius), randrange(radius, self.size.y - radius), color, radius)
         collision = self.is_collide(ball)
-        if collision:
-            while collision:
-                ball = Ball(randrange(radius, self.size.x - radius), randrange(radius, self.size.y - radius), color, radius)
-                collision = self.is_collide(ball)
+        while collision:
+            ball = Ball(randrange(radius, self.size.x - radius), randrange(radius, self.size.y - radius), color, radius)
+            collision = self.is_collide(ball)
         return ball
 
     def __init_balls(self, nb_balls: int):
@@ -67,10 +66,10 @@ class Board:
 
         white_ball = self.__create_ball(Color(255, 255, 255), 8)
         self.balls.append(white_ball)
-        for n in range(nb_balls - 2): # Generation of n-2 grey balls
+        for n in range(nb_balls - 2):  # Generation of n-2 grey balls
             grey_ball = self.__create_ball(Color(190, 190, 190))
             self.balls.append(grey_ball)
-        for n in range(2): # Generation of 2 blue balls if we consider that Player2 is represented by the color blue
+        for n in range(2):  # Generation of 2 blue balls if we consider that Player2 is represented by the color blue
             # The second player start with two balls of his color
             blue_ball = self.__create_ball(Color(0, 0, 255))
             self.balls.append(blue_ball)
