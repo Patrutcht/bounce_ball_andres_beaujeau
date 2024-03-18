@@ -1,5 +1,4 @@
-from typing import Self
-
+from __future__ import annotations
 from pygame.math import Vector2
 from pygame.color import Color
 from numpy.matlib import sqrt
@@ -28,7 +27,7 @@ class Ball:
         self.color = color
         self.radius = radius
 
-    def dist(self, other: Self):
+    def dist(self, other: Ball):
         """
         Calculate the distance between a ball and another ball
         :param other: other ball
