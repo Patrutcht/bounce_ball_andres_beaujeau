@@ -28,7 +28,7 @@ class Game:
         """
         self.players = []
         for n in range(nb_player):
-            player_name = input(f'Player {n + 1} name: ')
+            player_name = input(f'Player {n + 1} name: ')  # Ask each player their pseudo
             self.players.append(Player(player_name, COLORS[n]))
         self.target_score = target_score
         self.board = Board(width, height)
