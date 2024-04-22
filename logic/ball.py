@@ -26,6 +26,22 @@ class Ball:
         self.color = color
         self.radius = radius
 
+    def get_color(self):
+        """
+        Get the color of the ball
+        :return: Color
+        """
+
+        return self.color
+
+    def set_color(self, color: Color):
+        """
+        Set the color of the ball
+        :param color: Color
+        """
+
+        self.color = color
+
     def dist(self, other):
         """
         Calculate the distance between a ball and another ball
@@ -36,4 +52,15 @@ class Ball:
         if other is None:
             return 0
         return self.pos.distance_to(other.pos)
-    
+
+    def change_color(self, color:Color):
+        """
+        Change the color off the ball
+        :param color: Color
+        """
+
+        ball_color = self.get_color()
+        if ball_color != Color(255, 255, 255):
+            self.set_color(color)
+        else:
+            self.set_color(Color(255, 255, 255))
