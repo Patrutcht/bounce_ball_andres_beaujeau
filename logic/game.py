@@ -1,13 +1,7 @@
-from pygame import Color
 from board import Board
-from player import Player
 
 WIDTH: int = 500
 HEIGHT: int = 500
-RED = Color(255, 0, 0)
-GREEN = Color(0, 255, 0)
-BLUE = Color(0, 0, 255)
-COLORS = [RED, BLUE, GREEN]
 
 
 class Game:
@@ -23,9 +17,8 @@ class Game:
         Constructor of Game
         :param nb_player: number of player
         :param target_score: score to reach
-        :param width: width of the board
-        :param height: height of the board
         """
+
         self.players = []
         for n in range(nb_player):
             player_name = input(f'Player {n + 1} name: ')  # Ask each player their pseudo
