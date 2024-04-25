@@ -34,7 +34,7 @@ class Ball:
 
         return self.pos
 
-    def set_pos(self, x: float, y: float):
+    def set_pos(self, x: int, y: int):
         """
         Set the position of the ball
         :param x: float
