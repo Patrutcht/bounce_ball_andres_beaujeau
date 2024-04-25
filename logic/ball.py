@@ -26,6 +26,40 @@ class Ball:
         self.color = color
         self.radius = radius
 
+    def get_pos(self):
+        """
+        Get position of the ball
+        :return: Vector2
+        """
+
+        return self.pos
+
+    def set_pos(self, x: float, y: float):
+        """
+        Set the position of the ball
+        :param x: float
+        :param y: float
+        """
+
+        self.pos = Vector2(x, y)
+
+    def get_speed(self):
+        """
+        Get speed of the ball
+        :return: Vector2
+        """
+
+        return self.speed
+
+    def set_speed(self, x: float, y:float):
+        """
+        Set speed of the ball
+        :param x: float
+        :param y: float
+        """
+
+        self.speed = Vector2(x, y)
+
     def get_color(self):
         """
         Get the color of the ball
@@ -41,6 +75,22 @@ class Ball:
         """
 
         self.color = color
+
+    def get_radius(self):
+        """
+        Get the radius of the ball
+        :return: int
+        """
+
+        return self.radius
+
+    def set_radius(self, radius: int):
+        """
+        Set the radius of the ball
+        :param radius: int
+        """
+
+        self.radius = radius
 
     def dist(self, other):
         """

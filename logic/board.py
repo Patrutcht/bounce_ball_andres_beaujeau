@@ -28,15 +28,19 @@ class Board:
     def is_collide(self, ball: Ball):
         """
         Check if a ball collide with another ball or with the board
-        :param ball: ball to check collision
+        :param ball: Ball ball to check collision
         :return: Bool
         """
 
-        if ball.radius >= ball.pos.x or ball.pos.x >= self.size.x + ball.radius:
+        balls = self.get_balls()
+        width, height = self.get_size().x, self.get_size().y
+        radius = ball.get_radius()
+        ball_pos = ball.get_pos()
+        if radius >= ball.pos.x or ball_pos.x >= width + ball.radius:
             return True
-        if ball.radius >= ball.pos.y or ball.pos.y >= self.size.y + ball.radius:
+        if radius >= ball.pos.y or ball_pos.y >= height + ball.radius:
             return True
-        for ball2 in self.balls:
+        for ball2 in balls:
             if ball2 == ball:
                 continue
             if ball.dist(ball2) <= 2 * ball.radius:
@@ -46,22 +50,22 @@ class Board:
     def __create_ball(self, color: Color, radius: int = 10):
         """
         Create a ball that verify the  condition of no collision with other element
-        :param color:
-        :param radius:
+        :param color: Color color of the ball to create
+        :param radius: float radius of the ball to create
         :return: Ball
         """
-
-        ball = Ball(randrange(radius, self.size.x - radius), randrange(radius, self.size.y - radius), color, radius)
+        width, height = self.get_size().x, self.get_size().y
+        ball = Ball(randrange(radius, width - radius), randrange(radius, height - radius), color, radius)
         collision = self.is_collide(ball)
         while collision:
-            ball = Ball(randrange(radius, self.size.x - radius), randrange(radius, self.size.y - radius), color, radius)
+            ball.set_pos(randrange(randrange(radius, width - radius), randrange(radius, height - radius)))
             collision = self.is_collide(ball)
         return ball
 
     def __init_balls(self, nb_balls: int):
         """
         Init a list of balls
-        :param nb_balls: number of balls to init
+        :param nb_balls: int number of balls to init
         """
 
         white_ball = self.__create_ball(Color(255, 255, 255), 8)
@@ -73,3 +77,44 @@ class Board:
             # The second player start with two balls of his color
             blue_ball = self.__create_ball(Color(0, 0, 255))
             self.balls.append(blue_ball)
+
+    def get_size(self):
+        """
+        Get the size of the board
+        :return: Vector2
+        """
+
+        return self.size
+
+    def set_size(self, width: int, height:int):
+        """
+        Set the sire of the board
+        :param width: int height of the board
+        :param height: int width of the board
+        """
+
+        self.size = Vector2(width, height)
+
+    def get_balls(self):
+        """
+        Get the list of all the balls on the board
+        :return: list[Ball]
+        """
+
+        return self.balls
+
+    def get_friction_coeff(self):
+        """
+        Get the friction coefficient of the balls on the board
+        :return: float
+        """
+
+        return self.friction_coeff
+
+    def set_friction_coeff(self, friction_coeff):
+        """
+        Set the friction coefficient of the balls on the board
+        :param friction_coeff: float
+        """
+
+        self.friction_coeff = friction_coeff
