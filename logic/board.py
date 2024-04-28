@@ -58,7 +58,7 @@ class Board:
         ball = Ball(randrange(radius, width - radius), randrange(radius, height - radius), color, radius)
         collision = self.is_collide(ball)
         while collision:
-            ball.set_pos(randrange(randrange(radius, width - radius), randrange(radius, height - radius)))
+            ball.set_pos(randrange(randrange(radius, width - radius)), randrange(radius, height - radius))
             collision = self.is_collide(ball)
         return ball
 
@@ -86,7 +86,7 @@ class Board:
 
         return self.size
 
-    def set_size(self, width: int, height:int):
+    def set_size(self, width: int, height: int):
         """
         Set the sire of the board
         :param width: int height of the board
