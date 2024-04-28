@@ -9,6 +9,7 @@ RED = Color(255, 0, 0)
 GREEN = Color(0, 0, 255)
 COLORS = [BLUE, RED, GREEN]
 
+
 class Game:
     """
     Handle bounce ball game

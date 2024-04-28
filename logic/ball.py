@@ -51,7 +51,7 @@ class Ball:
 
         return self.speed
 
-    def set_speed(self, x: float, y:float):
+    def set_speed(self, x: float, y: float):
         """
         Set speed of the ball
         :param x: float
@@ -103,7 +103,7 @@ class Ball:
             return 0
         return self.pos.distance_to(other.pos)
 
-    def change_color(self, color:Color):
+    def change_color(self, color: Color):
         """
         Change the color off the ball
         :param color: Color
