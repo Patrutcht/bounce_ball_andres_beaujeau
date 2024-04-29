@@ -1,7 +1,13 @@
+from pygame import Color
 from board import Board
+from logic.player import Player
 
 WIDTH: int = 500
 HEIGHT: int = 500
+BLUE = Color(0, 255, 0)
+RED = Color(255, 0, 0)
+GREEN = Color(0, 0, 255)
+COLORS = [BLUE, RED, GREEN]
 
 
 class Game:
@@ -25,3 +31,26 @@ class Game:
             self.players.append(Player(player_name, COLORS[n]))
         self.target_score = target_score
         self.board = Board(width, height)
+
+    def get_players(self):
+        """
+        Get the list of players
+        :return: list[Player]
+        """
+
+        return self.players
+
+    def get_target_score(self):
+        """
+        Get target score
+        :return: int
+        """
+
+        return self.target_score
+
+    def set_target_score(self, target_score: int):
+        """
+        Set target score
+        """
+
+        self.target_score = target_score
