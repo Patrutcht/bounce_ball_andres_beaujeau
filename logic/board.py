@@ -181,3 +181,16 @@ class Board:
         """
 
         self.friction_coeff = friction_coeff
+
+    def check_move(self):
+        """
+        Check if the balls are still moving
+        :return: Bool True if at least a ball is moving
+        """
+
+        balls = self.get_balls()
+        for ball in balls:
+            speed = ball.get_speed()
+            if speed.length() == 0:
+                return False
+        return True
