@@ -36,9 +36,9 @@ class Board:
         width, height = self.get_size().x, self.get_size().y
         radius = ball.get_radius()
         ball_pos = ball.get_pos()
-        if radius >= ball.pos.x or ball.pos.x >= width + radius:
+        if radius >= ball.pos.x or ball.pos.x >= width + ball.radius:
             return True
-        if radius >= ball.pos.y or ball.pos.y >= height + radius:
+        if radius >= ball.pos.y or ball.pos.y >= height + ball.radius:
             return True
         for ball2 in balls:
             if ball2 == ball:
