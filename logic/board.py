@@ -43,9 +43,53 @@ class Board:
         for ball2 in balls:
             if ball2 == ball:
                 continue
-            if ball.dist(ball2) <= 2 * ball.radius:
-                return True
+            if ball.dist(ball2) <= 2 * radius:
+                return ball2
         return False
+
+    def collision(self, ball: Ball):
+        """
+        Updates balls speed vector after collision between two balls
+        :param ball:
+        :return: None
+        """
+
+    if self.is_collide(ball):
+        r = ball.radius
+        x1 = ball.pos.x
+        y1 = ball.pos.y
+        vx1 = ball.speed.x
+        vy1 = ball.speed.y
+        if ball.radius >= ball.pos.x or ball.pos.x >= self.size.x + ball.radius:
+            ball.speed.x = -vx1
+        elif ball.radius >= ball.pos.y or ball.pos.y >= self.size.y + ball.radius:
+            ball.speed.y = -vy1
+        else:
+            ball2 = self.is_collide(ball)
+            x2 = ball2.pos.x
+            y2 = ball2.pos.y
+            vx2 = ball2.speed.x
+            vy2 = ball2.speed.y
+
+            # Calcul de la base orthonormée (n, g)
+            # n est perpendiculaire au plan de collision, g est tangent
+            nx = (x2 - x1) / (2 * r)
+            ny = (y2 - y1) / (2 * r)
+            gx = -ny
+            gy = nx
+
+            # Calcul des vitesses dans cette base
+            v1n = nx * vx1 + ny * vy1
+            v1g = gx * vx1 + gy * vy1
+            v2n = nx * vx2 + ny * vy2
+            v2g = gx * vx2 + gy * vy2
+
+            # Permute les coordonnées n et conserve la vitesse tangentielle
+            # Exécute la transformation inverse (base orthonormée => matrice transposée)
+            ball.speed.x = nx * v2n + gx * v1g
+            ball.speed.y = ny * v2n + gy * v1g
+            ball2.speed.x = nx * v1n + gx * v2g
+            ball2.speed.y = ny * v1n + gy * v2g
 
     def __create_ball(self, color: Color, radius: int = 10):
         """
