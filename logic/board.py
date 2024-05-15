@@ -32,14 +32,19 @@ class Board:
         :return: Bool
         """
 
-        if ball.radius >= ball.pos.x or ball.pos.x >= self.size.x + ball.radius:
+        balls = self.balls
+        self.size.x=width
+        self.size.y=height
+        Ball.radius=radius
+
+        if radius >= ball.pos.x or ball.pos.x >= width + radius:
             return self
-        if ball.radius >= ball.pos.y or ball.pos.y >= self.size.y + ball.radius:
+        if radius >= ball.pos.y or ball.pos.y >= height + radius:
             return self
-        for ball2 in self.balls:
+        for ball2 in balls:
             if ball2 == ball:
                 continue
-            if ball.dist(ball2) <= 2 * ball.radius:
+            if ball.dist(ball2) <= 2 * radius:
                 return ball2
         return False
 
