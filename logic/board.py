@@ -32,11 +32,6 @@ class Board:
         :return: Bool
         """
 
-        balls = self.balls
-        self.size.x=width
-        self.size.y=height
-        Ball.radius=radius
-
         if radius >= ball.pos.x or ball.pos.x >= width + radius:
             return self
         if radius >= ball.pos.y or ball.pos.y >= height + radius:
