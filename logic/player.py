@@ -1,6 +1,8 @@
 import pygame
 from pygame import Color
 
+COORDS = [(900, 150), (900, 400)]
+
 
 class Player:
     """
@@ -80,7 +82,24 @@ class Player:
         color = self.get_color()
         score = self.get_score()
         radius = 5
+        if color.r == 255:
+            p = 1
+        else:
+            p = 2
         if score > 0:
-            for i in range(score):
-                pygame.draw.circle(screen, color, center, radius)
-
+            for i in range(int((score + 1) / 2)):
+                if score % 2 == 1:
+                    pygame.draw.circle(screen, pygame.Color(255, 0, 0),
+                                       (COORDS[p][0] + i * (5 + 2 * radius), COORDS[p][1]),
+                                       radius)
+                    pygame.draw.circle(screen, pygame.Color(255, 0, 0),
+                                       (COORDS[p][0] - i * (5 + 2 * radius), COORDS[p][1]),
+                                       radius)
+                else:
+                    pygame.draw.circle(screen, pygame.Color(255, 0, 0),
+                                       (COORDS[p][0] + (2 * i + 1) * (5 / 2 + radius), COORDS[p][1]),
+                                       radius)
+                    pygame.draw.circle(screen, pygame.Color(255, 0, 0),
+                                       (COORDS[p][0] - (2 * i + 1) * (5 / 2 + radius), COORDS[p][1]),
+                                       radius)
+                    
