@@ -1,3 +1,4 @@
+import pygame
 from pygame.math import Vector2
 from pygame.color import Color
 from numpy.matlib import sqrt
@@ -114,3 +115,14 @@ class Ball:
             self.set_color(color)
         else:
             self.set_color(Color(255, 255, 255))
+
+    def draw(self, screen: pygame.Surface):
+        """
+        Draw the ball on the screen
+        :param screen: pygame.Surface window to draw in
+        """
+
+        center = self.get_pos()
+        radius = self.get_radius()
+        color = self.get_color()
+        pygame.draw.circle(screen, color, center, radius)

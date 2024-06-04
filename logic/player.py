@@ -1,3 +1,4 @@
+import pygame
 from pygame import Color
 
 
@@ -68,3 +69,18 @@ class Player:
         """
 
         self.color = color
+
+    def draw(self, screen: pygame.Surface):
+        """
+        Draw the player avatar and all his information on the display
+        :param screen: pygama.Surface window to draw in
+        """
+
+        name = self.get_name()
+        color = self.get_color()
+        score = self.get_score()
+        radius = 5
+        if score > 0:
+            for i in range(score):
+                pygame.draw.circle(screen, color, center, radius)
+
