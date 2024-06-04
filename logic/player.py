@@ -3,7 +3,6 @@ from pygame import Color
 
 COORDS = [(900, 150), (900, 400)]
 
-
 class Player:
     """
     Handle logic of player
@@ -72,10 +71,11 @@ class Player:
 
         self.color = color
 
-    def draw(self, screen: pygame.Surface):
+    def draw(self, screen: pygame.Surface, font: pygame.font):
         """
         Draw the player avatar and all his information on the display
         :param screen: pygama.Surface window to draw in
+        :param font: pygame.font zone where the name of the player while be written
         """
 
         name = self.get_name()
@@ -102,4 +102,6 @@ class Player:
                     pygame.draw.circle(screen, pygame.Color(255, 0, 0),
                                        (COORDS[p][0] - (2 * i + 1) * (5 / 2 + radius), COORDS[p][1]),
                                        radius)
+        txt = font.render(name, True, pygame.Color(0, 0, 0))
+        screen.blit(txt, (COORDS[p][0], COORDS[p][1]))
                     

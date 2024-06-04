@@ -204,9 +204,12 @@ class Board:
         """
 
         size = self.get_size()
+        balls = self.get_balls()
         black_rect = pygame.Rect((0, 0), size)
         yellow_rect = pygame.Rect((10, 10), (size[0] - 20, size[1] - 20))
         green_rect = pygame.Rect((15, 15), (size[0] - 30, size[1] - 30))
         pygame.draw.rect(screen, Color(102, 63, 65), black_rect)
         pygame.draw.rect(screen, Color(184, 162, 0), yellow_rect)
         pygame.draw.rect(screen, Color(14, 109, 1), green_rect)
+        for ball in balls:
+            ball.draw(screen)
