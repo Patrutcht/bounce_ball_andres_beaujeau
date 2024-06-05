@@ -147,7 +147,9 @@ class white_Ball(Ball):
         self.player = player
 
 class colored_Ball(Ball):
-
+    """
+        Handle colored ball logical
+        """
     def __init__(self, x, y, color=Color(255, 255, 255)):
         super().__init__(x, y, color)
 
