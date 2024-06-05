@@ -2,6 +2,7 @@ import pygame
 from pygame.math import Vector2
 from pygame.color import Color
 from numpy.matlib import sqrt
+from player import Player
 
 
 class Ball:
@@ -126,3 +127,30 @@ class Ball:
         radius = self.get_radius()
         color = self.get_color()
         pygame.draw.circle(screen, color, center, radius)
+
+    class white_Ball(Ball):
+        """
+        Handle white ball logical
+        """
+        player: Player
+        def __init__(self, x, y, player: Player, color=Color(255, 255, 255)):
+            super().__init__(x, y, color)
+            self.player=player
+
+        def get_player(self):
+            """
+            Get the number of the current player
+            :return: Player
+            """
+
+            return self.player
+
+        def set_player(self, player: Player):
+            """
+            Set the player using the white ball
+            :param player: Player
+            """
+
+            self.player = player
+
+
