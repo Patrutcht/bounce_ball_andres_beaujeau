@@ -193,9 +193,9 @@ class Board:
         balls = self.get_balls()
         for ball in balls:
             speed = ball.get_speed()
-            if speed.length() == 0:
-                return False
-        return True
+            if speed.length() != 0:
+                return True
+        return False
 
     def draw(self, screen: pygame.Surface):
         """
@@ -213,3 +213,29 @@ class Board:
         pygame.draw.rect(screen, Color(14, 109, 1), green_rect)
         for ball in balls:
             ball.draw(screen)
+
+    def step(self):
+
+        balls = self.get_balls()
+        friction_coeff = self.get_friction_coeff()
+        for ball in balls:
+            if is_collide(ball):
+
+                if is_collide(ball) == True:
+                    collision(ball)
+                else:
+                    ball2 = is_collide(ball)
+                    collision(ball, ball2)
+            ball_pos = ball.get_pos()
+            ball_speed = ball.get_speed()
+            ball_direction = Vector2.normalize(ball_speed)
+            friction_force = -friction_coeff * ball_direction
+            if speed.length != 0:
+                new_speed = ball_speed + dt * friction_force
+                if Vector2.dot(ball_speed, new_speed) <= 0:
+                    ball.set_speed(0, 0)
+                else:
+                    ball.set_speed(new_speed.x, new_speed.y)
+                ball_speed = ball.get_speed()
+                new_pos = ball_pos + dt * ball_speed()
+                ball.set_pos(new_pos.x, new_pos.y)
