@@ -67,16 +67,17 @@ class Board:
             elif ball.radius >= ball.pos.y or ball.pos.y >= self.size.y + ball.radius:
                 ball.speed.y = -vy1
             else:
-                delete_ball1,delete_ball2=False,False
-                if type(ball1)==white_Ball:
-                    player_color=ball1.get_player().get_color()
-                    ball_color=ball2.get_color()
-                    if player_color==ball_color:
-                        delete_ball2=True
-                    else :
+                ball2 = self.is_collide(ball)
+                delete_ball1, delete_ball2 = False, False
+                if type(ball1) == white_Ball:
+                    player_color = ball1.get_player().get_color()
+                    ball_color = ball2.get_color()
+                    if player_color == ball_color:
+                        delete_ball2 = True
+                    else:
                         ball2.change_color(ball1)
 
-                if type(ball2)==white_Ball:
+                if type(ball2) == white_Ball:
                     player_color = ball2.get_player().get_color()
                     ball_color = ball1.get_color()
                     if player_color == ball_color:
@@ -110,10 +111,12 @@ class Board:
                 ball2.speed.x = nx * v1n + gx * v2g
                 ball2.speed.y = ny * v1n + gy * v2g
 
-                if delete_ball1 :
+                if delete_ball1:
                     del_ball(ball1)
-                if delete_ball2 :
+                    self.get_balls()[0].set_score(self.get_balls()[0].get_score + 1)
+                if delete_ball2:
                     del_ball(ball2)
+                    self.get_balls()[0].set_score(self.get_balls()[0].get_score + 1)
 
     def __create_ball(self, color: Color, radius: int = 10):
         """
@@ -236,13 +239,13 @@ class Board:
         for ball in balls:
             ball.draw(screen)
 
-    def step(self):
+    def step(self, dt: float):
 
         balls = self.get_balls()
         friction_coeff = self.get_friction_coeff()
         for ball in balls:
             if is_collide(ball):
-                    collision(ball)
+                collision(ball)
             ball_pos = ball.get_pos()
             ball_speed = ball.get_speed()
             ball_direction = Vector2.normalize(ball_speed)

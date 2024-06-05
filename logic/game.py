@@ -38,6 +38,11 @@ class Game:
 
         return self.players
 
+    def set_players(self, players: list[Player]):
+        """
+        Set tje list of player
+        :param players: list[Player] list of player
+        """
     def get_target_score(self):
         """
         Get target score
@@ -72,4 +77,3 @@ class Game:
         for player in players:
             player.draw()
         board.draw()
-        

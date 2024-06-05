@@ -1,5 +1,4 @@
 import csv
-
 import numpy as np
 import pygame
 import button
@@ -7,6 +6,8 @@ import button
 # lien utile https://www.youtube.com/watch?v=2iyx8_elcYg
 WIDTH = 1200
 HEIGHT = 600
+BOARD_WIDTH = 600
+BOARD_HEIGHT = 600
 COORDS = [(900, 150), (900, 400)]
 
 pygame.init()
@@ -76,8 +77,13 @@ menu = True
 start = False
 Player1 = False
 Player2 = False
+game = False
+played_turn = False
 p1_name = ""
 p2_name = ""
+player = None
+c = 5
+dt = 1/125
 title = pygame.image.load('assets/image/title.png')
 p1 = pygame.image.load('assets/image/player1.png')
 p2 = pygame.image.load('assets/image/player2.png')
@@ -107,6 +113,22 @@ while running:
         if i.type == pygame.KEYDOWN and Player2:
             if i.key == pygame.K_BACKSPACE:
                 p2_name = p2_name[:-1]
+        if i.type == pygame.KEYDOWN and not played_turn:
+            if i.key == pygame.BUTTON_RIGHT:
+                balls = game.board.get_balls()
+                mouse_coord = pygame.Vector2(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
+                white_coord = game.board.get_balls[0].get_pos()
+                dist = dist(mouse_coord, white_coord)
+                white_ball = balls[0]
+                white_ball.set_player(player)
+                if dist < max_dist:
+                    white_ball = balls.set_speed(c * mouse_coord)
+                else:
+                    white_ball = balls.set_speed(c * (max_dist * (
+                            white_coord.x - mouse_coord.x) / dist - white_coord.x, max_dist * (
+                                                                  white_coord.y - mouse_coord.y) / dist - white_coord.y))
+                game.board.set_balls([white_ball] + balls[1:])
+
         if i.type == pygame.QUIT:
             running = False
             break
@@ -134,7 +156,35 @@ while running:
             start = True
     if start:
         screen.fill(pygame.Color(220, 220, 220))
-        mouse_coord = (pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
+        if not game:
+            bounce_box = game([p1_name, p2_name], 5, BOARD_WIDTH, BOARD_HEIGHT)
+            player = bounce_box.get_player()[0]
+        elif not bounce_box.board.check_move() and not played_turn:
+            game.draw()
+            mouse_coord = pygame.Vector2(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
+            white_coord = game.board.get_balls[0].get_pos()
+            phi = angle(mouse_coord, white_coord)
+            dist = dist(mouse_coord, white_coord)
+            if dist < max_dist:
+                pygame.draw.polygon(screen, pygame.Color(185, 122, 87, 120), [mouse_coord, (
+                    white_coord.x + radius * np.sin(phi), white_coord.y + radius * np.cos(phi)), (
+                                                                                  white_coord.x - radius * np.sin(phi),
+                                                                                  white_coord.y - radius * np.cos(
+                                                                                      phi))])
+
+            else:
+                pygame.draw.polygon(screen, pygame.Color(185, 122, 87, 120), [(max_dist * (
+                        white_coord.x - mouse_coord.x) / dist - white_coord.x, max_dist * (
+                                                                                       white_coord.y - mouse_coord.y) / dist - white_coord.y),
+                                                                              (white_coord.x + radius * np.sin(phi),
+                                                                               white_coord.y + radius * np.cos(phi)), (
+                                                                                  white_coord.x - radius * np.sin(phi),
+                                                                                  white_coord.y - radius * np.cos(
+                                                                                      phi))])
+        elif not game.board.check_move() and played_turn:
+            bounce_box.board.step(dt)
+        elif game.board.check_move() and played_turn:
+            player = bounce_box.get_players()[abs(1 - 1**bounce_box.get_players().index(player))]
     pygame.display.flip()
 
 if winner:
