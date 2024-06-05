@@ -2,9 +2,11 @@ import pygame
 from pygame.math import Vector2
 from pygame.color import Color
 from numpy.matlib import sqrt
+from player import Player
+from abc import ABC
 
 
-class Ball:
+class Ball(ABC):
     """
     Handle all the ball logical
     """
@@ -104,17 +106,7 @@ class Ball:
             return 0
         return self.pos.distance_to(other.pos)
 
-    def change_color(self, color: Color):
-        """
-        Change the color off the ball
-        :param color: Color
-        """
 
-        ball_color = self.get_color()
-        if ball_color != Color(255, 255, 255):
-            self.set_color(color)
-        else:
-            self.set_color(Color(255, 255, 255))
 
     def draw(self, screen: pygame.Surface):
         """
@@ -126,3 +118,56 @@ class Ball:
         radius = self.get_radius()
         color = self.get_color()
         pygame.draw.circle(screen, color, center, radius)
+
+
+class white_Ball(Ball):
+
+    """
+    Handle white ball logical
+    """
+    player: Player
+    def __init__(self, x, y, player: Player, color=Color(255, 255, 255)):
+        super().__init__(x, y, color)
+        self.player=player
+
+    def get_player(self):
+        """
+        Get the number of the current player
+        :return: Player
+        """
+
+        return self.player
+
+    def set_player(self, player: Player):
+        """
+        Set the player using the white ball
+        :param player: Player
+        """
+
+        self.player = player
+
+class colored_Ball(Ball):
+    """
+        Handle colored ball logical
+        """
+    def __init__(self, x, y, color=Color(255, 255, 255)):
+        super().__init__(x, y, color)
+
+
+    def change_color(self, whiteball : white_Ball):
+        """
+        Change the color of the ball according to current player
+        :param whiteball: white_Ball
+        """
+
+        ball_color = self.get_color()
+        player_color=whiteball.get_player().getcolor()
+        if ball_color != player_color :
+            if ball_color == Color(180,180,180):
+                ball_color = player_color
+            else :
+                ball_color = Color(180, 180, 180)
+            self.set_color(player_color)
+
+
+
