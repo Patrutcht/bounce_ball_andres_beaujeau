@@ -150,7 +150,7 @@ class colored_Ball(Ball):
     """
         Handle colored ball logical
         """
-    def __init__(self, x, y, color=Color(255, 255, 255)):
+    def __init__(self, x, y, color=Color(180, 180, 180)):
         super().__init__(x, y, color)
 
 
