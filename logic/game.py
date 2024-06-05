@@ -1,3 +1,4 @@
+import pygame
 from pygame import Color
 from board import Board
 from logic.player import Player
@@ -18,17 +19,14 @@ class Game:
     board: Board
     target_score: int
 
-    def __init__(self, nb_player: int, target_score: int, width: int = WIDTH, height: int = HEIGHT):
+    def __init__(self, players, target_score: int, width: int = WIDTH, height: int = HEIGHT):
         """
         Constructor of Game
         :param nb_player: number of player
         :param target_score: score to reach
         """
 
-        self.players = []
-        for n in range(nb_player):
-            player_name = input(f'Player {n + 1} name: ')  # Ask each player their pseudo
-            self.players.append(Player(player_name, COLORS[n]))
+        self.players = players
         self.target_score = target_score
         self.board = Board(width, height)
 
@@ -54,3 +52,24 @@ class Game:
         """
 
         self.target_score = target_score
+
+    def get_board(self):
+        """
+        Get the board
+        :return : Board.board
+        """
+
+        return self.board
+
+    def draw(self, screen: pygame.Surface):
+        """
+        Draw the game on the pygame window
+        :param screen: pygame.Surface
+        """
+
+        players = self.get_players()
+        board = self.get_board()
+        for player in players:
+            player.draw()
+        board.draw()
+        

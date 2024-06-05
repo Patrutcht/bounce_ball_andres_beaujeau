@@ -3,6 +3,7 @@ from pygame import Color
 
 COORDS = [(900, 150), (900, 400)]
 
+
 class Player:
     """
     Handle logic of player
@@ -104,4 +105,3 @@ class Player:
                                        radius)
         txt = font.render(name, True, pygame.Color(0, 0, 0))
         screen.blit(txt, (COORDS[p][0], COORDS[p][1]))
-                    
