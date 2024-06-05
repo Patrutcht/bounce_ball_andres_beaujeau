@@ -67,6 +67,23 @@ class Board:
             elif ball.radius >= ball.pos.y or ball.pos.y >= self.size.y + ball.radius:
                 ball.speed.y = -vy1
             else:
+                delete_ball1,delete_ball2=False,False
+                if type(ball1)==white_Ball:
+                    player_color=ball1.get_player().get_color()
+                    ball_color=ball2.get_color()
+                    if player_color==ball_color:
+                        delete_ball2=True
+                    else :
+                        ball2.change_color(ball1)
+
+                if type(ball2)==white_Ball:
+                    player_color = ball2.get_player().get_color()
+                    ball_color = ball1.get_color()
+                    if player_color == ball_color:
+                        delete_ball1 = True
+                    else:
+                        ball1.change_color(ball2)
+
                 ball2 = self.is_collide(ball)
                 x2 = ball2.pos.x
                 y2 = ball2.pos.y
@@ -93,6 +110,11 @@ class Board:
                 ball2.speed.x = nx * v1n + gx * v2g
                 ball2.speed.y = ny * v1n + gy * v2g
 
+                if delete_ball1 :
+                    del_ball(ball1)
+                if delete_ball2 :
+                    del_ball(ball2)
+
     def __create_ball(self, color: Color, radius: int = 10):
         """
         Create a ball that verify the  condition of no collision with other element
@@ -101,7 +123,7 @@ class Board:
         :return: Ball
         """
         width, height = self.get_size().x, self.get_size().y
-        ball = Ball(randrange(radius, width - radius), randrange(radius, height - radius), color, radius)
+        ball = colored_Ball(randrange(radius, width - radius), randrange(radius, height - radius), color, radius)
         collision = self.is_collide(ball)
         while collision:
             ball.set_pos(randrange(randrange(radius, width - radius)), randrange(radius, height - radius))
@@ -113,11 +135,11 @@ class Board:
         Init a list of balls
         :param nb_balls: int number of balls to init
         """
-
-        white_ball = self.__create_ball(Color(255, 255, 255), 8)
-        self.balls.append(white_ball)
+        width, height = self.get_size().x, self.get_size().y
+        whiteball = white_Ball(randrange(radius, width - radius), randrange(radius, height - radius), color, radius)
+        self.balls.append(whiteball)
         for n in range(nb_balls - 2):  # Generation of n-2 grey balls
-            grey_ball = self.__create_ball(Color(190, 190, 190))
+            grey_ball = self.__create_ball()
             self.balls.append(grey_ball)
         for n in range(2):  # Generation of 2 blue balls if we consider that Player2 is represented by the color blue
             # The second player start with two balls of his color
@@ -220,12 +242,7 @@ class Board:
         friction_coeff = self.get_friction_coeff()
         for ball in balls:
             if is_collide(ball):
-
-                if is_collide(ball) == True:
                     collision(ball)
-                else:
-                    ball2 = is_collide(ball)
-                    collision(ball, ball2)
             ball_pos = ball.get_pos()
             ball_speed = ball.get_speed()
             ball_direction = Vector2.normalize(ball_speed)
