@@ -1,14 +1,14 @@
 import pygame
 from pygame import Color
 from board import Board
-from logic.player import Player
+from player import Player
 
 WIDTH: int = 500
 HEIGHT: int = 500
-BLUE = Color(0, 255, 0)
+BLUE = Color(0, 0, 255)
 RED = Color(255, 0, 0)
-GREEN = Color(0, 0, 255)
-COLORS = [BLUE, RED, GREEN]
+GREEN = Color(0, 255, 0)
+COLORS = [RED, BLUE, GREEN]
 
 
 class Game:
@@ -26,9 +26,11 @@ class Game:
         :param target_score: score to reach
         """
 
-        self.players = players
+        self.players = []
+        for i in range(len(players)):
+            self.players.append(Player(players[i], COLORS[i]))
         self.target_score = target_score
-        self.board = Board(width, height)
+        self.board = Board(width, height, 0.2)
 
     def get_players(self):
         """
@@ -66,14 +68,15 @@ class Game:
 
         return self.board
 
-    def draw(self, screen: pygame.Surface):
+    def draw(self, screen: pygame.Surface, font: pygame.font):
         """
         Draw the game on the pygame window
+        :param font: pygame.font font for text
         :param screen: pygame.Surface
         """
 
         players = self.get_players()
         board = self.get_board()
         for player in players:
-            player.draw()
-        board.draw()
+            player.draw(screen, font)
+        board.draw(screen)

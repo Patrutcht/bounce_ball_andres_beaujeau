@@ -82,26 +82,26 @@ class Player:
         name = self.get_name()
         color = self.get_color()
         score = self.get_score()
-        radius = 5
+        radius = 7
         if color.r == 255:
-            p = 1
+            p = 0
         else:
-            p = 2
+            p = 1
         if score > 0:
             for i in range(int((score + 1) / 2)):
                 if score % 2 == 1:
-                    pygame.draw.circle(screen, pygame.Color(255, 0, 0),
-                                       (COORDS[p][0] + i * (5 + 2 * radius), COORDS[p][1]),
+                    pygame.draw.circle(screen, self.get_color(),
+                                       (COORDS[p][0] + i * (5 + 2 * radius), COORDS[p][1] + 10),
                                        radius)
-                    pygame.draw.circle(screen, pygame.Color(255, 0, 0),
-                                       (COORDS[p][0] - i * (5 + 2 * radius), COORDS[p][1]),
+                    pygame.draw.circle(screen, self.get_color(),
+                                       (COORDS[p][0] - i * (5 + 2 * radius), COORDS[p][1] + 10),
                                        radius)
                 else:
-                    pygame.draw.circle(screen, pygame.Color(255, 0, 0),
-                                       (COORDS[p][0] + (2 * i + 1) * (5 / 2 + radius), COORDS[p][1]),
+                    pygame.draw.circle(screen, self.get_color(),
+                                       (COORDS[p][0] + (2 * i + 1) * (5 / 2 + radius), COORDS[p][1] + 10),
                                        radius)
-                    pygame.draw.circle(screen, pygame.Color(255, 0, 0),
-                                       (COORDS[p][0] - (2 * i + 1) * (5 / 2 + radius), COORDS[p][1]),
+                    pygame.draw.circle(screen, self.get_color(),
+                                       (COORDS[p][0] - (2 * i + 1) * (5 / 2 + radius), COORDS[p][1] + 10),
                                        radius)
         txt = font.render(name, True, pygame.Color(0, 0, 0))
-        screen.blit(txt, (COORDS[p][0], COORDS[p][1]))
+        screen.blit(txt, (COORDS[p][0] - 40, COORDS[p][1] - 30))

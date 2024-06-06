@@ -3,7 +3,7 @@ from random import randrange
 import pygame
 from pygame import Color
 from pygame.math import Vector2
-from ball import Ball
+from ball import Ball, white_Ball, colored_Ball
 
 
 class Board:
@@ -14,7 +14,7 @@ class Board:
     balls: list[Ball]
     friction_coeff: float
 
-    def __init__(self, width: int, height: int, friction: float = 0.2):
+    def __init__(self, width: int, height: int, friction: float = 100):
         """
         Constructor of Board
         :param width: width
@@ -38,9 +38,9 @@ class Board:
         width, height = self.get_size().x, self.get_size().y
         radius = ball.get_radius()
         ball_pos = ball.get_pos()
-        if radius >= ball.pos.x or ball_pos.x >= width + ball.radius:
+        if radius >= ball.pos.x or ball_pos.x >= width - ball.radius:
             return True
-        if radius >= ball.pos.y or ball_pos.y >= height + ball.radius:
+        if radius >= ball.pos.y or ball_pos.y >= height - ball.radius:
             return True
         for ball2 in balls:
             if ball2 == ball:
@@ -58,38 +58,40 @@ class Board:
 
         if self.is_collide(ball):
             r = ball.radius
-            x1 = ball.pos.x
-            y1 = ball.pos.y
-            vx1 = ball.speed.x
-            vy1 = ball.speed.y
-            if ball.radius >= ball.pos.x or ball.pos.x >= self.size.x + ball.radius:
-                ball.speed.x = -vx1
-            elif ball.radius >= ball.pos.y or ball.pos.y >= self.size.y + ball.radius:
-                ball.speed.y = -vy1
+            ball_pos=ball.get_pos()
+            ball_speed=ball.get_speed()
+            x1 = ball_pos.x
+            y1 = ball_pos.y
+            vx1 = ball_speed.x
+            vy1 = ball_speed.y
+            if r >= x1 or x1 >= self.size.x - r:
+                ball.set_speed(-vx1,vy1)
+            elif r >= y1 or y1 >= self.size.y - r:
+                ball.set_speed(vx1,-vy1)
             else:
                 ball2 = self.is_collide(ball)
                 delete_ball1, delete_ball2 = False, False
-                if type(ball1) == white_Ball:
-                    player_color = ball1.get_player().get_color()
+                if type(ball) == white_Ball:
+                    player_color = ball.get_player().get_color()
                     ball_color = ball2.get_color()
                     if player_color == ball_color:
                         delete_ball2 = True
                     else:
-                        ball2.change_color(ball1)
+                        ball2.change_color(ball)
 
                 if type(ball2) == white_Ball:
                     player_color = ball2.get_player().get_color()
-                    ball_color = ball1.get_color()
+                    ball_color = ball.get_color()
                     if player_color == ball_color:
                         delete_ball1 = True
                     else:
-                        ball1.change_color(ball2)
+                        ball.change_color(ball2)
 
                 ball2 = self.is_collide(ball)
-                x2 = ball2.pos.x
-                y2 = ball2.pos.y
-                vx2 = ball2.speed.x
-                vy2 = ball2.speed.y
+                x2 = ball2.get_pos().x
+                y2 = ball2.get_pos().y
+                vx2 = ball2.get_speed().x
+                vy2 = ball2.get_speed().y
 
                 # Calcul de la base orthonormée (n, g)
                 # n est perpendiculaire au plan de collision, g est tangent
@@ -112,11 +114,11 @@ class Board:
                 ball2.speed.y = ny * v1n + gy * v2g
 
                 if delete_ball1:
-                    del_ball(ball1)
-                    self.get_balls()[0].set_score(self.get_balls()[0].get_score + 1)
+                    self.del_ball(ball)
+                    self.get_balls()[0].get_player().set_score(self.get_balls()[0].get_player().get_score() + 1)
                 if delete_ball2:
-                    del_ball(ball2)
-                    self.get_balls()[0].set_score(self.get_balls()[0].get_score + 1)
+                    self.del_ball(ball2)
+                    self.get_balls()[0].get_player().set_score(self.get_balls()[0].get_player().get_score() + 1)
 
     def __create_ball(self, color: Color, radius: int = 10):
         """
@@ -126,7 +128,7 @@ class Board:
         :return: Ball
         """
         width, height = self.get_size().x, self.get_size().y
-        ball = colored_Ball(randrange(radius, width - radius), randrange(radius, height - radius), color, radius)
+        ball = colored_Ball(randrange(radius, width - radius), randrange(radius, height - radius), color)
         collision = self.is_collide(ball)
         while collision:
             ball.set_pos(randrange(randrange(radius, width - radius)), randrange(radius, height - radius))
@@ -138,11 +140,12 @@ class Board:
         Init a list of balls
         :param nb_balls: int number of balls to init
         """
+        radius = 14
         width, height = self.get_size().x, self.get_size().y
-        whiteball = white_Ball(randrange(radius, width - radius), randrange(radius, height - radius), color, radius)
+        whiteball = white_Ball(randrange(radius, width - radius), randrange(radius, height - radius), radius)
         self.balls.append(whiteball)
         for n in range(nb_balls - 2):  # Generation of n-2 grey balls
-            grey_ball = self.__create_ball()
+            grey_ball = self.__create_ball(pygame.Color(120, 120, 120))
             self.balls.append(grey_ball)
         for n in range(2):  # Generation of 2 blue balls if we consider that Player2 is represented by the color blue
             # The second player start with two balls of his color
@@ -230,9 +233,9 @@ class Board:
 
         size = self.get_size()
         balls = self.get_balls()
-        black_rect = pygame.Rect((0, 0), size)
-        yellow_rect = pygame.Rect((10, 10), (size[0] - 20, size[1] - 20))
-        green_rect = pygame.Rect((15, 15), (size[0] - 30, size[1] - 30))
+        black_rect = pygame.Rect((0, 0), (size[0] + 30, size[1] + 30))
+        yellow_rect = pygame.Rect((10, 10), (size[0] + 10, size[1] + 10))
+        green_rect = pygame.Rect((15, 15), size)
         pygame.draw.rect(screen, Color(102, 63, 65), black_rect)
         pygame.draw.rect(screen, Color(184, 162, 0), yellow_rect)
         pygame.draw.rect(screen, Color(14, 109, 1), green_rect)
@@ -244,18 +247,20 @@ class Board:
         balls = self.get_balls()
         friction_coeff = self.get_friction_coeff()
         for ball in balls:
-            if is_collide(ball):
-                collision(ball)
+            if self.is_collide(ball):
+                self.collision(ball)
             ball_pos = ball.get_pos()
             ball_speed = ball.get_speed()
-            ball_direction = Vector2.normalize(ball_speed)
-            friction_force = -friction_coeff * ball_direction
-            if speed.length != 0:
+            if abs(ball_speed.x) > 0.2 and abs(ball_speed.y) > 0.2:
+                ball_direction = Vector2.normalize(ball_speed)
+                friction_force = -friction_coeff * ball_direction
                 new_speed = ball_speed + dt * friction_force
                 if Vector2.dot(ball_speed, new_speed) <= 0:
                     ball.set_speed(0, 0)
                 else:
                     ball.set_speed(new_speed.x, new_speed.y)
                 ball_speed = ball.get_speed()
-                new_pos = ball_pos + dt * ball_speed()
+                new_pos = ball_pos + dt * ball_speed
                 ball.set_pos(new_pos.x, new_pos.y)
+            else :
+                ball.set_speed(0, 0)
