@@ -140,9 +140,9 @@ class Board:
         Init a list of balls
         :param nb_balls: int number of balls to init
         """
-        radius = 30
+        radius = 14
         width, height = self.get_size().x, self.get_size().y
-        whiteball = white_Ball(randrange(radius, width - radius), randrange(radius, height - radius), pygame.Color(255, 255, 255), radius)
+        whiteball = white_Ball(randrange(radius, width - radius), randrange(radius, height - radius), radius)
         self.balls.append(whiteball)
         for n in range(nb_balls - 2):  # Generation of n-2 grey balls
             grey_ball = self.__create_ball(pygame.Color(180, 180, 180))

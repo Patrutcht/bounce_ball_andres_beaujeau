@@ -124,9 +124,9 @@ class white_Ball(Ball):
     """
     player: Player
 
-    def __init__(self, x, y, player: Player, color=Color(255, 255, 255)):
-        super().__init__(x, y, color)
-        self.player = player
+    def __init__(self, x, y, radius,color=Color(255, 255, 255)):
+        super().__init__(x, y, color,radius)
+        self.player = None
 
     def get_player(self):
         """
@@ -163,7 +163,7 @@ class colored_Ball(Ball):
         player_color = whiteball.get_player().get_color()
         if ball_color != player_color:
             if ball_color == Color(180, 180, 180):
-                ball_color = player_color
+                 self.set_color(player_color)
             else:
-                ball_color = Color(180, 180, 180)
-            self.set_color(player_color)
+                self.set_color(Color(180, 180, 180))
+
