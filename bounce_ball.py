@@ -174,7 +174,7 @@ while running:
     if start:
         screen.fill(pygame.Color(220, 220, 220))
         if not play_game:
-            bounce_box = Game([p1_name, p2_name], 5, BOARD_WIDTH, BOARD_HEIGHT)
+            bounce_box = Game([p1_name, p2_name], 6, BOARD_WIDTH, BOARD_HEIGHT)
             player = bounce_box.get_players()[0]
             play_game = True
         elif not bounce_box.board.check_move() and not played_turn:
@@ -215,9 +215,9 @@ while running:
             screen.blit(player2_img, (900, 280))
             player = bounce_box.get_players()[abs(bounce_box.get_players().index(player) - 1)]
             played_turn = False
-    if max(score) == 5:
+    if max(score) == 6:
         start = False
-        ind = score.index(5)
+        ind = score.index(6)
         screen.fill(pygame.Color(180, 180,180))
         if ind == 0:
             screen.blit(p1, (380, 250))

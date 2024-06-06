@@ -150,7 +150,7 @@ class colored_Ball(Ball):
         Handle colored ball logical
         """
 
-    def __init__(self, x, y, color=Color(180, 180, 180)):
+    def __init__(self, x, y, color=Color(120, 120, 120)):
         super().__init__(x, y, color)
 
     def change_color(self, whiteball: white_Ball):
@@ -162,8 +162,8 @@ class colored_Ball(Ball):
         ball_color = self.get_color()
         player_color = whiteball.get_player().get_color()
         if ball_color != player_color:
-            if ball_color == Color(180, 180, 180):
+            if ball_color == Color(120, 120, 120):
                  self.set_color(player_color)
             else:
-                self.set_color(Color(180, 180, 180))
+                self.set_color(Color(120, 120, 120))
 
