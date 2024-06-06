@@ -12,8 +12,9 @@ class Player:
     color: Color
     name: str
     score: int
+    bot:bool
 
-    def __init__(self, name: str, color: Color):
+    def __init__(self, name: str, color: Color,bot):
         """
         Constructor of Player
         :param name: name of the player
@@ -23,6 +24,7 @@ class Player:
         self.name = name
         self.color = color
         self.score = 0
+        self.bot = bot
 
     def get_name(self):
         """
@@ -71,7 +73,6 @@ class Player:
         """
 
         self.color = color
-
     def draw(self, screen: pygame.Surface, font: pygame.font):
         """
         Draw the player avatar and all his information on the display
