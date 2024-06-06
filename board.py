@@ -14,7 +14,7 @@ class Board:
     balls: list[Ball]
     friction_coeff: float
 
-    def __init__(self, width: int, height: int, friction: float = 100):
+    def __init__(self, width: int, height: int, friction: float = 0.5):
         """
         Constructor of Board
         :param width: width
@@ -251,11 +251,11 @@ class Board:
                 self.collision(ball)
             ball_pos = ball.get_pos()
             ball_speed = ball.get_speed()
-            if abs(ball_speed.x) > 0.2 and abs(ball_speed.y) > 0.2:
+            if Vector2.length(ball_speed) != 0.0:
                 ball_direction = Vector2.normalize(ball_speed)
                 friction_force = -friction_coeff * ball_direction
                 new_speed = ball_speed + dt * friction_force
-                if Vector2.dot(ball_speed, new_speed) <= 0:
+                if Vector2.length(ball_speed) <= 0.2:
                     ball.set_speed(0, 0)
                 else:
                     ball.set_speed(new_speed.x, new_speed.y)
