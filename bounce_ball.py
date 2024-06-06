@@ -165,7 +165,7 @@ while running:
         draw_text("(choose a name)", text_font, pygame.Color(0, 0, 0), (510, 180))
         draw_text(p2_name, name_font, pygame.Color(210, 210, 210), (300, 200))
         if start_button.draw(screen):
-            Player1 = False
+            Player2 = False
             wait = True
     if wait:
         screen.fill(pygame.Color(180, 180,180))

@@ -30,7 +30,7 @@ class Game:
         for i in range(len(players)):
             self.players.append(Player(players[i], COLORS[i]))
         self.target_score = target_score
-        self.board = Board(width, height, 0.2)
+        self.board = Board(width, height, 0.5)
 
     def get_players(self):
         """
