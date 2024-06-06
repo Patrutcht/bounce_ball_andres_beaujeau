@@ -264,3 +264,29 @@ class Board:
                 ball.set_pos(new_pos.x, new_pos.y)
             else :
                 ball.set_speed(0, 0)
+
+    def nearest_ball(self,whiteball):
+        """
+        return the direction to the nearest alied_ball
+        :param whiteball: white_Ball
+        :return:
+        """
+        if whiteball.get_player().bot:
+            balls=self.get_balls()
+            color=whiteball.get_player().get_color()
+            white_pos=whiteball.get_pos()
+            ballpos = balls[1].get_pos()
+            vect = Vector2(ballpos.x - white_pos.x,ballpos.y - white_pos.y)
+            dist = Vector2.length(vect)
+            direction = Vector2.normalize(vect)
+            min=[dist,direction]
+            for ball in balls[2:]:
+                ballpos=ball.get_pos()
+                vect=Vector2(ballpos.x - white_pos.x,ballpos.y - white_pos.y)
+                dist = Vector2.length(vect)
+                direction = Vector2.normalize(vect)
+                if dist<=min[0]:
+                    min=[dist,direction]
+            return min[1]
+
+

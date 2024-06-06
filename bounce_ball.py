@@ -71,7 +71,7 @@ def draw_text(text, font, text_col, coord):
     img = font.render(text, True, text_col)
     screen.blit(img, coord)
 
-
+player2ai = False
 menu = True
 start = False
 Player1 = False
@@ -104,11 +104,15 @@ start_img = pygame.image.load('assets/image/start.png').convert_alpha()
 start_img = pygame.transform.scale(start_img, (300, 97))
 next_img = pygame.image.load('assets/image/next.png').convert_alpha()
 next_img = pygame.transform.scale(next_img, (300, 90))
+bot_img = pygame.image.load('assets/image/bot.png').convert_alpha()
+
+bot_img = pygame.transform.scale(bot_img, (300, 90))
 
 # create button instances
 play_button = button.Button(450, 250, play_img, 1)
 start_button = button.Button(450, 350, start_img, 1)
 next_button = button.Button(750, 350, next_img, 1)
+bot_button = button.Button(450, 470, bot_img, 1)
 
 while running:
     for i in pygame.event.get():
@@ -167,6 +171,11 @@ while running:
         if start_button.draw(screen):
             Player2 = False
             wait = True
+        if bot_button.draw(screen):
+            Player2= False
+            wait = True
+            player2ai=True
+            p2_name="BOT"
     if wait:
         screen.fill(pygame.Color(180, 180,180))
         screen.blit(space, (124, 250))
@@ -174,26 +183,35 @@ while running:
     if start:
         screen.fill(pygame.Color(220, 220, 220))
         if not play_game:
-            bounce_box = Game([p1_name, p2_name], 6, BOARD_WIDTH, BOARD_HEIGHT)
+
+            bounce_box = Game([[p1_name,False], [p2_name,player2ai]], 6, BOARD_WIDTH, BOARD_HEIGHT)
             player = bounce_box.get_players()[0]
             play_game = True
+
         elif not bounce_box.board.check_move() and not played_turn:
-            bounce_box.draw(screen, text_font)
-            screen.blit(player1_img, (900, 30))
-            screen.blit(player2_img, (900, 280))
-            mouse_coord = pygame.Vector2(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
-            white_coord = bounce_box.get_board().get_balls()[0].get_pos()
-            phi = angle(mouse_coord, white_coord)
-            dist = pygame.Vector2.distance_to(mouse_coord, white_coord)
-            if dist < max_dist:
-                pygame.draw.polygon(screen, pygame.Color(185, 122, 87, 10), [mouse_coord, (
-                    white_coord.x + radius * np.sin(phi), white_coord.y - radius * np.cos(phi)), (
+            if player.bot:
+                whiteball = bounce_box.board.get_balls()[0]
+                whiteball.set_player(player)
+                direction=bounce_box.board.nearest_ball(whiteball)
+                whiteball.set_speed(c*max_dist*direction.x,c*max_dist*direction.y)
+                played_turn=True
+            else:
+                bounce_box.draw(screen, text_font)
+                screen.blit(player1_img, (900, 30))
+                screen.blit(player2_img, (900, 280))
+                mouse_coord = pygame.Vector2(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
+                white_coord = bounce_box.get_board().get_balls()[0].get_pos()
+                phi = angle(mouse_coord, white_coord)
+                dist = pygame.Vector2.distance_to(mouse_coord, white_coord)
+                if dist < max_dist:
+                    pygame.draw.polygon(screen, pygame.Color(185, 122, 87, 10), [mouse_coord, (
+                        white_coord.x + radius * np.sin(phi), white_coord.y - radius * np.cos(phi)), (
                                                                                   white_coord.x - radius * np.sin(phi),
                                                                                   white_coord.y + radius * np.cos(
                                                                                       phi))])
 
-            else:
-                pygame.draw.polygon(screen, pygame.Color(185, 122, 87, 120),
+                else:
+                    pygame.draw.polygon(screen, pygame.Color(185, 122, 87, 120),
                                     [(white_coord[0] + max_dist * np.cos(phi), white_coord[1] + max_dist * np.sin(phi)),
                                      (white_coord.x + radius * np.sin(phi),
                                       white_coord.y - radius * np.cos(phi)), (

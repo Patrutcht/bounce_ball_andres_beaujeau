@@ -28,7 +28,7 @@ class Game:
 
         self.players = []
         for i in range(len(players)):
-            self.players.append(Player(players[i], COLORS[i]))
+            self.players.append(Player(players[i][0], COLORS[i],players[i][1]))
         self.target_score = target_score
         self.board = Board(width, height, 0.5)
 
@@ -42,7 +42,7 @@ class Game:
 
     def set_players(self, players: list[Player]):
         """
-        Set tje list of player
+        Set the list of player
         :param players: list[Player] list of player
         """
     def get_target_score(self):
